@@ -1,21 +1,8 @@
 /*********************************************************************
- This is an example for our nRF52 based Bluefruit LE modules
-
- Pick one up today in the adafruit shop!
-
- Adafruit invests time and resources providing this open source code,
- please support Adafruit and open-source hardware by purchasing
- products from Adafruit!
-
- MIT license, check LICENSE for more information
- All text above, and the splash screen below must be included in
- any redistribution
+ Uses the Bluefruit NR52 feather module to sync states with 
+ a BLE beacon.
 *********************************************************************/
 
-/*
- * This sketch demonstrate the central API(). A additional bluefruit
- * that has bleuart as peripheral is required for the demo.
- */
 #include <bluefruit.h>
 #include <Adafruit_NeoPixel.h>
 
