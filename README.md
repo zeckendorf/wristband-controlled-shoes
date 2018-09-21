@@ -1,6 +1,6 @@
 # Remote Controlled Shoes
 
-These exist with [some ubiquity](https://www.amazon.com/s?k=led+shoes+with+remote&ref=nb_sb_noss), but at the prompting of a friend Ithought it might be fun to design a system that would work more flexibly in different form factors. Ultimately, one device sits as a combination BLE beacon and peripheral that can pair with a phone and transmit the LED state via BLE  advertising packets. 
+These exist with [some ubiquity](https://www.amazon.com/s?k=led+shoes+with+remote&ref=nb_sb_noss), but at the prompting of a friend I thought it might be fun to design a system that would work more flexibly in different form factors. Ultimately, one device sits as a combination BLE beacon and peripheral that can pair with a phone and transmit the LED state via BLE  advertising packets. 
 
 ## Files
 
