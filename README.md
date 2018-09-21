@@ -11,7 +11,7 @@ advertising packets.
 
 Device acting as BLE central, ordinarily this pairs with peripherals but in this case simply scans for advertising packets, extracts the UUID, and if it is a match for its wristband, will sync its state. Deployed to any number of synced devices beyond shoes, e.g. LED headphones synced with music.
 
-**`ble_beacon_wrist`**
+**`ble_beacon_wrist.ino`**
 
 Device acting as the BLE beacon &mdash; pairs with a control phone as a peripheral to set the button states, and then upon button presses will adjust its state and transmit this information via the BLE beacon `minor` value. BLE beacon architecture is as follows:
 
