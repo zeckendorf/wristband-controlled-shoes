@@ -34,17 +34,29 @@ void loop()
   // reinit beacon every loop (realistically should only do this when state changes)
   initBeacon();
 
-  // delay almost 1 second
-  delay(800);
+  // use serial port to set state
+  receiveSerial();
 
   // update state 
-  state += 1;
+  /* state += 1;
   if (state > 0x0005)
   {
     state = 0x00;
-  }
+  }*/
 }
 
+void receiveSerial(){
+  
+    // send data only when you receive data:
+    if (Serial.available() > 0) {
+            // read the incoming byte:
+            state = Serial.parseInt();
+
+            // say what you got:
+            Serial.print("Current State: ");
+            Serial.println(state, DEC);
+    }
+}
 /*------------------------------------------------------------------*/
 /* Beacon!
  *------------------------------------------------------------------*/

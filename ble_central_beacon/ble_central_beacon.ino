@@ -13,9 +13,10 @@
 #define ADV_SCAN_SIZE 31
 #define MINOR_OFFSET 28
 #define MINOR_SIZE 2
+#define NUM_LEDS 5
 
 // for color data
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(35, PIN, NEO_GRB + NEO_KHZ800);
 
 // state for color
 uint16_t state;
