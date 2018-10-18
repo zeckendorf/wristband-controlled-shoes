@@ -1,6 +1,9 @@
 #include <bluefruit.h>
+#include <Bounce2.h>
+
 #define MANUFACTURER_ID   0x00E0
 #define MAJOR_ID   0xEEFF
+#define BUTTON_PIN 7
 
 /* TODO:
  *  - Adjust state based on button presses
@@ -13,8 +16,10 @@ uint8_t beaconUuid[16] =
   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
 };
 
+// global vars
 BLEBeacon beacon;
 uint16_t state;
+Bounce debouncer = Bounce(); // Instantiate a Bounce object
 
 void setup()
 {
@@ -27,22 +32,34 @@ void setup()
   // Initialize beacon with state in the minor packet
   state = 0x00;
   initBeacon();
+
+  // Init button reader
+  debouncer.attach(BUTTON_PIN, INPUT_PULLUP); // Attach the debouncer to a pin with INPUT_PULLUP mode
+  debouncer.interval(25); // Use a debounce interval of 25 milliseconds
+  
 }
 
 void loop()
 {
-  // reinit beacon every loop (realistically should only do this when state changes)
-  initBeacon();
+  // get button state
+  debouncer.update(); // Update the Bounce instance
 
   // use serial port to set state
   receiveSerial();
+  
+  if ( debouncer.fell() ) {  // Call code if button transitions from HIGH to LOW
+     
+     state += 1;
+     
+     if (state > 5) 
+      state = 0;
 
-  // update state 
-  /* state += 1;
-  if (state > 0x0005)
-  {
-    state = 0x00;
-  }*/
+      // reinit beacon every loop (realistically should only do this when state changes)
+      initBeacon();
+      
+     Serial.print("Current State: ");
+     Serial.println(state, DEC);
+   }
 }
 
 void receiveSerial(){
