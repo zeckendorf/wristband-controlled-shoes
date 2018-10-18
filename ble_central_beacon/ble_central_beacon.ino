@@ -9,7 +9,6 @@ Uses the Bluefruit NR52 feather module to sync states with
 
 /* TODO:
     - Get rid of delays in animations by using millis() and frame time modulus
-    - UUID offset should be 4: (Company ID H, Company ID L, Data Type, Data Length, UUID), need to investigate
     -
 */
 
@@ -19,9 +18,10 @@ Uses the Bluefruit NR52 feather module to sync states with
 
 // Constant definitions -- these offsets within the ble advertising packet 
 // are described here (page 10): http://www.ti.com/lit/an/swra475a/swra475a.pdf
+// and also here: https://os.mbed.com/blog/entry/BLE-Beacons-URIBeacon-AltBeacons-iBeacon/
 #define PIN 7
 #define UUID_SIZE 16     //bytes
-#define UUID_OFFSET 9    //bytes... should be 4, need to investigate
+#define UUID_OFFSET 9    //bytes (Beacon Prefix: 3B flags + 2B header + 2B company ID + 1B secondary ID + 1B length = 9B)
 #define ADV_SCAN_SIZE 31 //bytes
 #define MINOR_OFFSET 28  //bytes
 #define MINOR_SIZE 2     //bytes
