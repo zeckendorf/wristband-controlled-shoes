@@ -17,3 +17,8 @@ Device acting as the BLE beacon &mdash; pairs with a control phone as a peripher
 * `major`: 2-byte category for a type of paired devices (i.e. wristband and two pairs of shoes, or set of 16 headphones, etc.)
 
 * `minor`: 2-byte system color state
+
+## In Action
+
+**Cycling Through Basics**
+![its working](/media/working.gif)
