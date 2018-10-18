@@ -20,5 +20,6 @@ Device acting as the BLE beacon &mdash; pairs with a control phone as a peripher
 
 ## In Action
 
-**Cycling Through Basics**
+*Cycling Through Basics:*
+
 ![its working](/media/working.gif)
