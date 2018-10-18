@@ -1,11 +1,20 @@
 /*********************************************************************
- Uses the Bluefruit NR52 feather module to sync states with 
- a BLE beacon.
+Author: Sam Zeckendorf
+  Date: 10/18/18
+  File: ble_central_beacon.ino
+
+Uses the Bluefruit NR52 feather module to sync states with 
+ a BLE beacon and illuminate a string of WS2812 RGB LEDs
 *********************************************************************/
+
+/* TODO:
+    - Get rid of delays in animations by using millis() and frame time modulus
+    - 
+    -
+*/
 
 #include <bluefruit.h>
 #include <Adafruit_NeoPixel.h>
-
 
 #define PIN 7
 #define UUID_SIZE 16
@@ -13,10 +22,10 @@
 #define ADV_SCAN_SIZE 31
 #define MINOR_OFFSET 28
 #define MINOR_SIZE 2
-#define NUM_LEDS 5
+#define NUM_LEDS 35
 
 // for color data
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(35, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 // state for color
 uint16_t state;
@@ -86,7 +95,6 @@ void scan_callback(ble_gap_evt_adv_report_t* report)
     Serial.print(state);
     Serial.print("\n-----------------------------\n");
   }
-
 }
 
 // helper function to determine if two arrays are equal
@@ -98,7 +106,6 @@ bool arraysEqual(uint8_t* a, uint8_t* b, int len)
       return false;
   }
   return true;
-
 }
 
 // used for controlling LEDs
