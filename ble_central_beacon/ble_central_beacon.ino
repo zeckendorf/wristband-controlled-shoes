@@ -25,13 +25,18 @@ Uses the Bluefruit NR52 feather module to sync states with
 #define ADV_SCAN_SIZE 31 //bytes
 #define MINOR_OFFSET 28  //bytes
 #define MINOR_SIZE 2     //bytes
-#define NUM_LEDS 35 
+#define NUM_LEDS 35
 
 // for color data
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 // state for color
 uint16_t state;
+
+// time in millis in state
+unsigned long time_in_state;
+unsigned long duration_in_state; 
+unsigned long frames_in_state;
 
 // id of beacon, to be generated via: https://www.uuidgenerator.net/
 uint8_t target_uuid[UUID_SIZE] = 
@@ -42,7 +47,11 @@ uint8_t target_uuid[UUID_SIZE] =
 
 void setup()
 {
-
+  // time setup
+  time_in_state     = 0;
+  duration_in_state = 0;
+  frames_in_state   = 0;
+  
   // LED setup
   strip.begin();
   strip.show();
@@ -83,20 +92,25 @@ void scan_callback(ble_gap_evt_adv_report_t* report)
 {
   // extract data from report (see nordic api)
   // https://developer.nordicsemi.com/nRF5_SDK/nRF51_SDK_v8.x.x/doc/8.0.0/s110/html/a00225.html
-  uint8_t* data = report->data;
-
+  uint8_t* data     = report->data;
+  uint16_t rx_state = 0;
   // pull out uuid from data (slick array slicing using memcpy)
   uint8_t scanned_uuid[UUID_SIZE];
   memcpy(scanned_uuid, &data[UUID_OFFSET], sizeof scanned_uuid);
-
-  // if the beacon is ours
+  
   if (arraysEqual(scanned_uuid, target_uuid, UUID_SIZE))
   { 
     // extract state
-    state = data[MINOR_OFFSET];
-    Serial.print("Shoe Beacon State: ");
-    Serial.print(state);
-    Serial.print("\n-----------------------------\n");
+    rx_state = data[MINOR_OFFSET];
+
+    // if the state changed, let's do something with it
+    if (state != rx_state){
+      state = rx_state;
+      Serial.print("Shoe Beacon State Updated: ");
+      Serial.print(state);
+      Serial.print("\n-----------------------------\n");
+      time_in_state = millis();
+    }
   }
 }
 
@@ -114,7 +128,8 @@ bool arraysEqual(uint8_t* a, uint8_t* b, int len)
 // used for controlling LEDs
 void loop()
 {
-  
+  //Serial.println(duration_in_state);
+  duration_in_state = millis() - time_in_state;
   if (state == 0x00)
   {
     none();
@@ -137,7 +152,7 @@ void loop()
   }
   else if (state == 0x05)
   {
-    rainbow(5);
+    rainbow(5, duration_in_state);
   }
 }
 
@@ -185,7 +200,8 @@ void colorWipe(uint32_t c, uint8_t wait) {
   }
 }
 
-void rainbow(uint8_t wait) {
+
+/*void rainbow(uint8_t wait) {
   uint16_t i, j;
 
   for(j=0; j<256; j++) {
@@ -195,6 +211,23 @@ void rainbow(uint8_t wait) {
     strip.show();
     delay(wait);
   }
+}*/
+
+void rainbow(uint8_t wait, unsigned long t) {
+  uint16_t i, j;
+  
+  // t = time in millis since the state was set to rainbow
+  if (t % wait == 0)
+    frames_in_state++;
+  if (frames_in_state >= 256)
+    frames_in_state = 0; 
+  j = frames_in_state;
+  
+  for(i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, Wheel((i+j) & 255));
+  }
+  strip.show();
+  
 }
 
 // Slightly different, this makes the rainbow equally distributed throughout
@@ -212,6 +245,7 @@ void rainbowCycle(uint8_t wait) {
 
 //Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
+  
   for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
       for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
