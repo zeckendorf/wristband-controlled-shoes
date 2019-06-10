@@ -28,6 +28,7 @@ void setup()
   Serial.println("Wristband Beacon for LED Shoe");
   Bluefruit.begin();
   Bluefruit.setName("LED_WB_0x0000");
+  Bluefruit.setTxPower(4); 
 
   // Initialize beacon with state in the minor packet
   state = 0x00;
