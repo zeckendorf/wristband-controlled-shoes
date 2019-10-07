@@ -12,10 +12,9 @@ Device acting as BLE remote that scans for the beacon. Ordinarily this pairs wit
 
 Device acting as the BLE beacon &mdash; pairs with a control phone as a peripheral to set the button states, and then upon button presses will adjust its state and transmit this information via the BLE beacon `minor` value. BLE beacon architecture is as follows:
 
-* `uuid`: 16-byte identifier for all devices in a given family (e.g. LED shoes). First 8-bytes represent the entire family of these devices, second 8-bytes are a unique identifier for this instance.
+* `uuid`: 16-byte identifier for all devices in a given family (e.g. LED shoes). In this case, the first 8-bytes represent the device family and the  second 8-bytes are a unique identifier for this pair.
 
-* `major`: 2-byte category for a type of paired devices (i.e. wristband and two pairs of shoes, or set of 16 headphones, etc.)
-
+* `major`: 2-byte device category of paired state (i.e. two shoes, 16 headphones, whatever)
 * `minor`: 2-byte system color state
 
 ## In Action
