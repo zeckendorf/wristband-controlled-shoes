@@ -4,11 +4,11 @@ These exist with [some ubiquity](https://www.amazon.com/s?k=led+shoes+with+remot
 
 ## Files
 
-**`ble_central_beacon.ino`**
+**`ble_beacon_remote.ino`**
 
-Device acting as BLE central, ordinarily this pairs with peripherals but in this case simply scans for advertising packets, extracts the UUID, and if it is a match for its wristband, will sync its state. Deployed to any number of synced devices beyond shoes, e.g. LED headphones synced with music.
+Device acting as BLE remote that scans for the beacon. Ordinarily this pairs with peripherals, but in this case simply scans for advertising packets, extracts the UUID, and if it is a match for its remote, will sync its state. Deployed to any number of synced devices beyond shoes, e.g. LED headphones synced with music.
 
-**`ble_beacon_wrist.ino`**
+**`ble_beacon_origin.ino`**
 
 Device acting as the BLE beacon &mdash; pairs with a control phone as a peripheral to set the button states, and then upon button presses will adjust its state and transmit this information via the BLE beacon `minor` value. BLE beacon architecture is as follows:
 
